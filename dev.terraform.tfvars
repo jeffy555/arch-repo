@@ -1,7 +1,1 @@
-managed_environment_name = "spiritops-container-app-env"
-container_registry_name = "spiritops"
-log_analytics_workspace_name = "workspaceaicloudbuilder9db5"
-container_registry_sku = "Basic"
-location = "southindia"
-container_app_name = "spiritops-app"
-dns_zone_name = "spiritops.in"
+container_image = "nginx:latest"

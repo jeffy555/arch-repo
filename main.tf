@@ -1,35 +1,46 @@
-resource "azurerm_app_managed_certificate" "spiritops_container_app_env_www_spiritops_in_spiritop_260227063125" {
-  name                = "www.spiritops.in-spiritop-260227063125"
-  managed_environment_id = azurerm_app_managed_environment.spiritops_container_app_env.id
+resource "azurerm_resource_group" "migrate_scope" {
+  name     = "AICloudBuilder"
+  location = "southindia"
 }
 
 resource "azurerm_container_registry" "spiritops" {
-  name                = var.container_registry_name
-  location            = var.location
-  resource_group_name = azurerm_resource_group.aicloudbuilder.name
-  sku                 = var.container_registry_sku
+  name                = "spiritops"
+  resource_group_name = azurerm_resource_group.migrate_scope.name
+  location            = "southindia"
+  sku                 = "Basic"
 }
 
-resource "azurerm_log_analytics_workspace" "workspaceaicloudbuilder9db5" {
-  name                = var.log_analytics_workspace_name
-  location            = var.location
-  resource_group_name = azurerm_resource_group.aicloudbuilder.name
-}
-
-resource "azurerm_app_managed_environment" "spiritops_container_app_env" {
-  name                = var.managed_environment_name
-  location            = var.location
-  resource_group_name = azurerm_resource_group.aicloudbuilder.name
+resource "azurerm_container_app_environment" "spiritops_env" {
+  name                = "spiritops-container-app-env"
+  resource_group_name = azurerm_resource_group.migrate_scope.name
+  location            = "southindia"
 }
 
 resource "azurerm_container_app" "spiritops_app" {
-  name                = var.container_app_name
-  managed_environment_id = azurerm_app_managed_environment.spiritops_container_app_env.id
-  location            = var.location
+  name                       = "spiritops-app"
+  resource_group_name        = azurerm_resource_group.migrate_scope.name
+  location                   = "southindia"
+  container_app_environment_id = azurerm_container_app_environment.spiritops_env.id
+  revision_mode              = "Single"
+
+  template {
+    container {
+      name  = "spiritops-container"
+      image = var.container_image
+    }
+  }
 }
 
+resource "azurerm_log_analytics_workspace" "workspace" {
+  name                = "workspaceaicloudbuilder9db5"
+  resource_group_name = azurerm_resource_group.migrate_scope.name
+  location            = "southindia"
+  sku                 = "PerGB2018"
+}
+
+# TODO: Add azurerm_container_app_environment_managed_certificate when API details are available
+
 resource "azurerm_dns_zone" "spiritops_in" {
-  name                = var.dns_zone_name
-  resource_group_name = azurerm_resource_group.aicloudbuilder.name
-  location            = "global"
+  name                = "spiritops.in"
+  resource_group_name = azurerm_resource_group.migrate_scope.name
 }

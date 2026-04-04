@@ -34,6 +34,7 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET || '' }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID || '' }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID || '' }}
+      ARM_USE_AZUREAD: "true"
     defaults:
       run:
         shell: bash
@@ -55,6 +56,7 @@ jobs:
 
       - name: Terraform Init
         run: terraform init -input=false
+        timeout-minutes: 3
 
       - name: Terraform Plan
         id: plan
@@ -68,6 +70,7 @@ jobs:
             exit 1
           fi
           echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
+        timeout-minutes: 5
 
       - name: Export plan summary
         run: |

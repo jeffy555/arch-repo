@@ -9,21 +9,6 @@ import {
 }
 
 import {
-  to = azurerm_storage_account.preacherjefferson
-  id = "/subscriptions/be1b0fcb-1e30-4142-bb0c-ff52f7a1a0e5/resourceGroups/myresume-live-rg/providers/Microsoft.Storage/storageAccounts/preacherjefferson"
-}
-
-import {
-  to = azurerm_service_plan.asp_myresumeliverg_ade0
-  id = "/subscriptions/be1b0fcb-1e30-4142-bb0c-ff52f7a1a0e5/resourceGroups/myresume-live-rg/providers/Microsoft.Web/serverFarms/ASP-myresumeliverg-ade0"
-}
-
-import {
-  to = azurerm_monitor_action_group.recommended_alert_rules_ag_6b460f
-  id = "/subscriptions/be1b0fcb-1e30-4142-bb0c-ff52f7a1a0e5/resourceGroups/myresume-live-rg/providers/Microsoft.Insights/actionGroups/RecommendedAlertRules-AG-6b460f"
-}
-
-import {
   to = azurerm_application_insights.jeffersonimmanuel
   id = "/subscriptions/be1b0fcb-1e30-4142-bb0c-ff52f7a1a0e5/resourceGroups/myresume-live-rg/providers/Microsoft.Insights/components/jeffersonimmanuel"
 }
@@ -34,6 +19,21 @@ import {
 }
 
 import {
+  to = azurerm_service_plan.asp_myresumeliverg_ade0
+  id = "/subscriptions/be1b0fcb-1e30-4142-bb0c-ff52f7a1a0e5/resourceGroups/myresume-live-rg/providers/Microsoft.Web/serverFarms/ASP-myresumeliverg-ade0"
+}
+
+import {
+  to = azurerm_storage_account.preacherjefferson
+  id = "/subscriptions/be1b0fcb-1e30-4142-bb0c-ff52f7a1a0e5/resourceGroups/myresume-live-rg/providers/Microsoft.Storage/storageAccounts/preacherjefferson"
+}
+
+import {
   to = azurerm_monitor_action_group.application_insights_smart_detection
   id = "/subscriptions/be1b0fcb-1e30-4142-bb0c-ff52f7a1a0e5/resourceGroups/myresume-live-rg/providers/Microsoft.Insights/actionGroups/Application Insights Smart Detection"
+}
+
+import {
+  to = azurerm_monitor_action_group.recommended_alert_rules_ag_6b460f
+  id = "/subscriptions/be1b0fcb-1e30-4142-bb0c-ff52f7a1a0e5/resourceGroups/myresume-live-rg/providers/Microsoft.Insights/actionGroups/RecommendedAlertRules-AG-6b460f"
 }

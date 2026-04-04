@@ -1,1 +1,0 @@
-container_image = "nginx:latest"

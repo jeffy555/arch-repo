@@ -3,43 +3,51 @@ resource "azurerm_resource_group" "migrate_scope" {
   location = "southindia"
 }
 
+resource "azurerm_log_analytics_workspace" "workspaceaicloudbuilder9db5" {
+  name                = "workspaceaicloudbuilder9db5"
+  location            = "southindia"
+  resource_group_name = azurerm_resource_group.migrate_scope.name
+  sku                 = "PerGB2018"
+  internet_ingestion_enabled = true
+  internet_query_enabled     = true
+}
+
 resource "azurerm_container_registry" "spiritops" {
   name                = "spiritops"
   location            = "southindia"
   resource_group_name = azurerm_resource_group.migrate_scope.name
   sku                 = "Basic"
   admin_enabled       = true
-  anonymous_pull_enabled = false
-  data_endpoint_enabled = false
   export_policy_enabled = true
   public_network_access_enabled = true
-  quarantine_policy_enabled = false
   retention_policy_in_days = 7
-  trust_policy_enabled = false
-  zone_redundancy_enabled = false
   network_rule_bypass_option = "AzureServices"
+  zone_redundancy_enabled = false
 }
 
-resource "azurerm_log_analytics_workspace" "workspaceaicloudbuilder9db5" {
-  name                = "workspaceaicloudbuilder9db5"
+resource "azurerm_container_app_environment" "spiritops_container_app_env" {
+  name                = "spiritops-container-app-env"
   location            = "southindia"
   resource_group_name = azurerm_resource_group.migrate_scope.name
-  internet_ingestion_enabled = true
-  internet_query_enabled = true
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.workspaceaicloudbuilder9db5.id
+  zone_redundancy_enabled = false
+  workload_profile {
+    name                 = "Consumption"
+    workload_profile_type = "Consumption"
+  }
 }
 
 resource "azurerm_container_app" "spiritops_app" {
   name                       = "spiritops-app"
   resource_group_name        = azurerm_resource_group.migrate_scope.name
-  container_app_environment_id = "/subscriptions/be1b0fcb-1e30-4142-bb0c-ff52f7a1a0e5/resourceGroups/AICloudBuilder/providers/Microsoft.App/managedEnvironments/spiritops-container-app-env"
+  container_app_environment_id = azurerm_container_app_environment.spiritops_container_app_env.id
   revision_mode              = "Single"
   max_inactive_revisions     = 100
   workload_profile_name      = "Consumption"
 
   ingress {
-    target_port = 80
+    target_port = 0
     external_enabled = true
-    transport = "auto"
     traffic_weight {
       percentage = 100
       latest_revision = true
@@ -75,45 +83,45 @@ resource "azurerm_container_app" "spiritops_app" {
         value = "9005"
       }
       env {
-        name = "DATABASE_URL"
+        name       = "DATABASE_URL"
         secret_name = "database-url"
       }
       env {
-        name = "JWT_SECRET"
+        name       = "JWT_SECRET"
         secret_name = "jwt-secret"
       }
       env {
-        name = "OPENAI_API_KEY"
+        name       = "OPENAI_API_KEY"
         secret_name = "openai-api-key"
       }
       env {
-        name = "BITWARDEN_ACCESS_TOKEN"
+        name       = "BITWARDEN_ACCESS_TOKEN"
         secret_name = "bitwarden-access-token"
       }
       env {
-        name = "BITWARDEN_PROJECT_ID"
+        name       = "BITWARDEN_PROJECT_ID"
         secret_name = "bitwarden-project-id"
       }
 
       liveness_probe {
-        port = 23040
-        transport = "TCP"
+        port     = 23040
+        transport = "tcp"
         failure_count_threshold = 3
         interval_seconds = 10
         timeout = 5
       }
 
       readiness_probe {
-        port = 23040
-        transport = "TCP"
+        port     = 23040
+        transport = "tcp"
         failure_count_threshold = 48
         interval_seconds = 5
         timeout = 5
       }
 
       startup_probe {
-        port = 23040
-        transport = "TCP"
+        port     = 23040
+        transport = "tcp"
         failure_count_threshold = 240
         initial_delay = 1
         interval_seconds = 1
@@ -122,8 +130,8 @@ resource "azurerm_container_app" "spiritops_app" {
     }
 
     http_scale_rule {
-      concurrent_requests = "10"
       name = "http-scaler"
+      concurrent_requests = "10"
     }
   }
 }
@@ -131,17 +139,4 @@ resource "azurerm_container_app" "spiritops_app" {
 resource "azurerm_dns_zone" "spiritops_in" {
   name                = "spiritops.in"
   resource_group_name = azurerm_resource_group.migrate_scope.name
-}
-
-resource "azurerm_container_app_environment" "spiritops_container_app_env" {
-  name                = "spiritops-container-app-env"
-  location            = "southindia"
-  resource_group_name = azurerm_resource_group.migrate_scope.name
-  log_analytics_workspace_id = azurerm_log_analytics_workspace.workspaceaicloudbuilder9db5.id
-  zone_redundancy_enabled = false
-
-  workload_profile {
-    name = "Consumption"
-    workload_profile_type = "Consumption"
-  }
 }

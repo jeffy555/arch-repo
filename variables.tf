@@ -1,59 +1,41 @@
-variable "log_analytics_workspace_name" {
-  description = "The name of the Log Analytics Workspace"
-  type        = string
-  default     = "workspaceaicloudbuilder9db5"
-}
-
-variable "container_app_name" {
-  description = "The name of the Container App"
-  type        = string
-  default     = "spiritops-app"
-}
-
-variable "container_registry_name" {
-  description = "The name of the Container Registry"
-  type        = string
-  default     = "spiritops"
-}
-
 variable "managed_environment_name" {
-  description = "The name of the Managed Environment"
+  description = "The name of the managed environment."
   type        = string
   default     = "spiritops-container-app-env"
 }
 
-variable "dns_zone_name" {
-  description = "The name of the DNS Zone"
+variable "container_registry_name" {
+  description = "The name of the container registry."
   type        = string
-  default     = "spiritops.in"
+  default     = "spiritops"
 }
 
-variable "certificate_name" {
-  description = "The name of the Managed Certificate"
+variable "log_analytics_workspace_name" {
+  description = "The name of the Log Analytics workspace."
   type        = string
-  default     = "www.spiritops.in-spiritop-260227063125"
+  default     = "workspaceaicloudbuilder9db5"
 }
 
-variable "certificate_hostname" {
-  description = "The hostname for the Managed Certificate"
+variable "container_registry_sku" {
+  description = "The SKU of the container registry."
   type        = string
-  default     = "www.spiritops.in"
+  default     = "Basic"
 }
 
 variable "location" {
-  description = "The Azure region where resources will be created"
+  description = "The Azure location where resources will be created."
   type        = string
   default     = "southindia"
 }
 
-variable "log_analytics_workspace_sku" {
-  description = "The SKU for the Log Analytics Workspace"
+variable "container_app_name" {
+  description = "The name of the container app."
   type        = string
-  default     = ""
+  default     = "spiritops-app"
 }
 
-variable "container_registry_sku" {
-  description = "The SKU for the Container Registry"
+variable "dns_zone_name" {
+  description = "The name of the DNS zone."
   type        = string
-  default     = "Basic"
+  default     = "spiritops.in"
 }

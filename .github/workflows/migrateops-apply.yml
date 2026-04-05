@@ -45,6 +45,10 @@ jobs:
         run: terraform init -input=false
         timeout-minutes: 3
 
+      - name: Terraform Validate
+        run: terraform validate -no-color
+        timeout-minutes: 2
+
       - name: Terraform Plan
         run: terraform plan -input=false -out=tfplan
         timeout-minutes: 5

@@ -6,14 +6,14 @@ output "log_analytics_workspace_id" {
   value = azurerm_log_analytics_workspace.workspaceaicloudbuilder9db5.id
 }
 
-output "dns_zone_id" {
-  value = azurerm_dns_zone.spiritops_in.id
-}
-
 output "container_app_environment_id" {
   value = azurerm_container_app_environment.spiritops_container_app_env.id
 }
 
 output "container_app_id" {
   value = azurerm_container_app.spiritops_app.id
+}
+
+output "dns_zone_id" {
+  value = azurerm_dns_zone.spiritops_in.id
 }

@@ -1,5 +1,5 @@
 variable "location" {
-  description = "The location of the resources."
+  description = "The location for resources."
   type        = string
   default     = "southindia"
 }

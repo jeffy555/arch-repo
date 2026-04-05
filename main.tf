@@ -12,8 +12,8 @@ resource "azurerm_container_registry" "spiritops" {
   export_policy_enabled = true
   public_network_access_enabled = true
   quarantine_policy_enabled = false
-  retention_policy_in_days = 7
   trust_policy_enabled = false
+  retention_policy_in_days = 7
   network_rule_bypass_option = "AzureServices"
 }
 
@@ -26,19 +26,14 @@ resource "azurerm_log_analytics_workspace" "workspaceaicloudbuilder9db5" {
   allow_resource_only_permissions = true
 }
 
-resource "azurerm_dns_zone" "spiritops_in" {
-  name                = "spiritops.in"
-  resource_group_name = azurerm_resource_group.migrate_scope.name
-}
-
 resource "azurerm_container_app_environment" "spiritops_container_app_env" {
   name                = "spiritops-container-app-env"
   location            = "southindia"
   resource_group_name = azurerm_resource_group.migrate_scope.name
   log_analytics_workspace_id = azurerm_log_analytics_workspace.workspaceaicloudbuilder9db5.id
-  zone_redundancy_enabled = false
+  tags                = {}
   workload_profile {
-    name = "Consumption"
+    name                 = "Consumption"
     workload_profile_type = "Consumption"
   }
 }
@@ -157,4 +152,9 @@ resource "azurerm_container_app" "spiritops_app" {
       name = "http-scaler"
     }
   }
+}
+
+resource "azurerm_dns_zone" "spiritops_in" {
+  name                = "spiritops.in"
+  resource_group_name = azurerm_resource_group.migrate_scope.name
 }

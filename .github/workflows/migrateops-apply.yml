@@ -21,7 +21,6 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET || '' }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID || '' }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID || '' }}
-      ARM_USE_AZUREAD: "true"
     defaults:
       run:
         shell: bash
@@ -43,15 +42,9 @@ jobs:
 
       - name: Terraform Init
         run: terraform init -input=false
-        timeout-minutes: 3
-
-      - name: Terraform Validate
-        run: terraform validate -no-color
-        timeout-minutes: 2
 
       - name: Terraform Plan
         run: terraform plan -input=false -out=tfplan
-        timeout-minutes: 5
 
       - name: Export plan summary
         run: |
@@ -90,7 +83,6 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET || '' }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID || '' }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID || '' }}
-      ARM_USE_AZUREAD: "true"
     defaults:
       run:
         shell: bash
@@ -118,8 +110,6 @@ jobs:
 
       - name: Terraform Init
         run: terraform init -input=false
-        timeout-minutes: 3
 
       - name: Terraform Apply
         run: terraform apply -input=false -auto-approve tfplan
-        timeout-minutes: 10

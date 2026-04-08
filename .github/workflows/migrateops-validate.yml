@@ -1,12 +1,6 @@
 name: MigrateOps Validate Migration
 
 on:
-  pull_request:
-    paths:
-      - '**.tf'
-      - '**.tfvars'
-      - 'imports.tf'
-      - '.github/workflows/migrateops-validate.yml'
   push:
     branches: [main]
     paths:
